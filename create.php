@@ -1,19 +1,23 @@
 <?php
-require_once __DIR__ . '_connec.php';
+require_once __DIR__ . '/_connec.php';
 
 $pdo = new \PDO(DSN, USER, PASS);
 
 
-/*if ($_POST['title'] = false && $_POST['content'] = false && $_POST['author'] = false) {
-
-} else { */
+if ($_POST != True) {
+    echo "Merci de remplir le formulaire:<br><br>";
+    $title = null;
+    $content = null;
+    $author = null;
+} else {
     $title = $_POST['title'];
     $content = $_POST['content'];
     $author = $_POST['author'];
+}
 
 
 
-$query = "INSERT INTO `story` (title, content, author) VALUES ('$title','content','author')";
+$query = "INSERT INTO `story` (title, content, author) VALUES ('$title','$content','$author')";
 $statement = $pdo->prepare($query);
 
 $statement->bindValue(':title', $title, PDO::PARAM_STR);
@@ -21,6 +25,10 @@ $statement->bindValue(':content', $content, PDO::PARAM_STR);
 $statement->bindValue(':author', $author, PDO::PARAM_STR);
 
 $statement->execute(); // Execute a prepared request
+//print_r($_POST);
+
+$story = $statement->fetchAll();
+//print_r($statement);
 
 ?>
 <!doctype html>
